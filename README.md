@@ -442,6 +442,21 @@ Contributions should prioritise:
 
 ---
 
+## Documentation
+
+Detailed project documentation is available in the `docs/` directory:
+
+- [Architecture](docs/architecture.md) — application layers and system design.
+- [API Reference](docs/api.md) — API principles and resource areas.
+- [Database](docs/database.md) — Prisma models and data relationships.
+- [Development Guide](docs/development.md) — local setup and development workflow.
+- [Deployment](docs/deployment.md) — production deployment guidance and checklist.
+- [Contributing](CONTRIBUTING.md) — contribution and pull-request standards.
+- [Security Policy](SECURITY.md) — vulnerability reporting and security principles.
+- [Changelog](CHANGELOG.md) — project history and planned release tracking.
+
+---
+
 ## Acknowledgements
 
 Developed for Abingdon School as an independent software development project.
