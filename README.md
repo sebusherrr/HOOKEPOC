@@ -50,6 +50,7 @@ Hooke is not simply a static website. It is an evolving software project with a 
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
 - [Project Information](#-project-information)
+- [Contact](#-contact)
 
 ---
 
@@ -244,7 +245,7 @@ Ensure the following are installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/Hooke.git
+git clone https://github.com/sebusherrr/Hooke.git
 ```
 
 Navigate into the project:
@@ -454,6 +455,16 @@ Detailed project documentation is available in the `docs/` directory:
 - [Contributing](CONTRIBUTING.md) — contribution and pull-request standards.
 - [Security Policy](SECURITY.md) — vulnerability reporting and security principles.
 - [Changelog](CHANGELOG.md) — project history and planned release tracking.
+
+---
+
+## Contact
+
+For questions, feedback, suggestions or enquiries about Hooke, contact the project developer:
+
+**[seb.usher@abingdon.org.uk](mailto:seb.usher@abingdon.org.uk)**
+
+See the full [Contact](CONTACT.md) page for more information. For security vulnerabilities, please follow the [Security Policy](SECURITY.md) rather than opening a public issue.
 
 ---
 
