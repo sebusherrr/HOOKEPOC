@@ -132,7 +132,7 @@ Hooke uses a modern web development stack selected for maintainability, flexibil
 | Git | Version control |
 | GitHub | Source code management |
 | GitHub Codespaces | Cloud development environment |
-| GitHub Pages | Frontend hosting (where configured) |
+| GitHub Pages & Netlify| Frontend hosting (where configured) |
 | npm | Package management |
 
 ---
