@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../db/prisma';
 
 /** Every write path that matters calls this. Keep metadata minimal — no full request bodies,
@@ -7,7 +8,7 @@ export async function writeAudit(
   action: string,
   targetType?: string,
   targetId?: string,
-  metadata: Record<string, unknown> = {}
+  metadata: Prisma.InputJsonValue = {}
 ) {
   await prisma.auditLog.create({
     data: { actorId: actorId ?? undefined, action, targetType, targetId, metadata },
