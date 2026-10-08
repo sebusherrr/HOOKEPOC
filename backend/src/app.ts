@@ -15,6 +15,7 @@ import { classCheckoutsRouter } from './routes/classCheckouts.routes';
 import { purchaseRequestsRouter } from './routes/purchaseRequests.routes';
 import { aiRouter } from './routes/ai.routes';
 import { adminRouter } from './routes/admin.routes';
+import { oliverRouter } from './routes/oliver.routes';
 
 export function createApp() {
   const app = express();
@@ -53,6 +54,7 @@ export function createApp() {
   app.use('/api/purchase-requests', purchaseRequestsRouter);
   app.use('/api/ai', aiRouter);
   app.use('/api/admin', adminRouter);
+  app.use('/api/integrations/oliver', oliverRouter);
 
   // Student-facing errors never leak stack traces/SQL/internal details — architecture.md §50.
   app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
