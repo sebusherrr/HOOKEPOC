@@ -483,3 +483,51 @@ Built with an emphasis on modern web technologies, thoughtful interface design a
   <br /><br />
   <sub>Designed with purpose. Built for the future.</sub>
 </p>
+
+## HOOKE POC presentation layer
+
+The repository now includes a presentation-ready proof-of-concept layer for demonstrating the intended library workflow. It includes working browser-side demo flows for:
+
+- Acquisitions
+- Authority Control
+- Book Reviews
+- Manual Book Entry
+- Lists
+- Book Lists
+- Oliver V5 / Softlink integration status and catalogue-search entry point
+- Groq-powered Hooke AI entry point
+- VLeBooks integration slot
+
+The demo modules deliberately use browser-local demo data where a live service is not configured. **They are not a substitute for production authentication, PostgreSQL persistence or vendor credentials.**
+
+### Oliver V5 / Softlink
+
+The supplied Softlink OPAC Web Services specification describes a SOAP/WSDL service with operations including `Query`, `GetBorrowerDetails` and `RenewLoan`. Calls require a Web Services user alias/password and installation-specific encrypted client credentials. The POC therefore keeps these credentials server-side and exposes an integration adapter rather than putting them in frontend JavaScript.
+
+Configure the backend with:
+
+```env
+OLIVER_OPAC_WSDL_URL="http://server:port/application-prefix/OpacAccess?wsdl"
+OLIVER_CORP_ALIAS=""
+OLIVER_CLIENT_ALIAS=""
+OLIVER_CLIENT_PASSWORD=""
+```
+
+The exact encrypted values must come from the school's Oliver/Softlink configuration; they should not be invented or committed to GitHub.
+
+### Groq — POC only
+
+Groq is optional and is intended only to demonstrate the AI-assisted library experience. Create a Groq API key through the Groq developer console, then set it **only on the backend**:
+
+```env
+AI_PROVIDER="groq"
+GROQ_API_KEY="..."
+```
+
+The existing backend AI service uses Groq's OpenAI-compatible chat endpoint and keeps the key out of browser code. Do not put a real key in the repository or in the frontend's integration form.
+
+### VLeBooks — POC only
+
+VLeBooks is represented as a configurable integration slot, but this repository does not assume a public self-service API-key process that has not been verified. For a real connection, obtain the approved API/developer documentation and credentials directly from the VLeBooks supplier, then implement the adapter against that specification.
+
+**POC status:** external integrations are intentionally honest about whether they are configured. The presentation UI can be demonstrated without exposing or inventing production credentials.
