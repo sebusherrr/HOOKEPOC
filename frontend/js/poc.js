@@ -20,24 +20,70 @@
 
   function renderAcquisitions(){
     const requests=db.purchaseRequests||[];
-    return wrap('Acquisitions',card(
-      '<div class="notice">Track suggested purchases before they become catalogue records. This demo stores requests locally; a production build would persist them in PostgreSQL.</div>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'+
-      '<div class="field"><label>Title</label><input id="acqTitle" placeholder="The Thursday Murder Club"></div>'+
-      '<div class="field"><label>Author</label><input id="acqAuthor" placeholder="Richard Osman"></div>'+
-      '<div class="field"><label>Supplier</label><input id="acqSupplier" placeholder="Supplier / wholesaler"></div>'+
-      '<div class="field"><label>Priority</label><select id="acqPriority"><option>Normal</option><option>High</option><option>Urgent</option></select></div></div>'+
-      '<button class="btn btn-primary" onclick="pocAddAcquisition()">Add acquisition request</button>')+
-      card(requests.length?'<table><tr><th>Title</th><th>Author</th><th>Supplier</th><th>Priority</th><th>Status</th><th></th></tr>'+
-        requests.map((r,i)=>'<tr><td>'+esc(r.title)+'</td><td>'+esc(r.author||'—')+'</td><td>'+esc(r.supplier||'—')+'</td><td>'+esc(r.priority||'Normal')+'</td><td><span class="status-pill '+(r.status==='Ordered'?'ready':'active')+'">'+esc(r.status||'Requested')+'</span></td><td><button class="btn btn-tertiary" onclick="pocOrderAcquisition('+i+')">'+(r.status==='Ordered'?'Ordered':'Mark ordered')+'</button></td></tr>').join('')+'</table>':
-        '<strong>No acquisition requests yet.</strong><p style="font-size:13px;color:var(--color-text-2)">Add a suggested purchase above to demonstrate the workflow.</p>')
+    const cart=requests.filter(r=>r.brownsCart===true);
+    const cartQty=cart.reduce((sum,r)=>sum+(Number(r.quantity)||1),0);
+    return wrap('Acquisitions',
+      card(
+        '<div class="notice">Create a request for a book or another library item. Book requests can be added to Hooke’s Brown’s Books order basket, then copied/exported for entry into the supplier’s real cart. Direct Brown’s Books cart integration needs an approved supplier API or account integration.</div>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'+
+        '<div class="field"><label>Item type</label><select id="acqType" onchange="pocAcqTypeChanged()"><option value="book">Book</option><option value="other">Other item</option></select></div>'+
+        '<div class="field"><label>Title / item name</label><input id="acqTitle" placeholder="The Thursday Murder Club" required></div>'+
+        '<div class="field"><label>Author (books)</label><input id="acqAuthor" placeholder="Richard Osman"></div>'+
+        '<div class="field"><label>ISBN (books)</label><input id="acqIsbn" placeholder="978…"></div>'+
+        '<div class="field"><label>Quantity</label><input id="acqQuantity" type="number" min="1" step="1" value="1"></div>'+
+        '<div class="field"><label>Estimated unit price (£)</label><input id="acqPrice" type="number" min="0" step="0.01" placeholder="Optional"></div>'+
+        '<div class="field"><label>Supplier</label><input id="acqSupplier" value="Brown’s Books" placeholder="Supplier / wholesaler"></div>'+
+        '<div class="field"><label>Priority</label><select id="acqPriority"><option>Normal</option><option>High</option><option>Urgent</option></select></div></div>'+
+        '<button class="btn btn-primary" onclick="pocAddAcquisition()">Add acquisition request</button>'
+      )+
+      card('<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h3 style="margin:0">Brown’s Books order basket</h3><p style="font-size:13px;color:var(--color-text-2);margin:5px 0 0">'+cart.length+' title(s), '+cartQty+' item(s). This is a Hooke handoff basket, not the supplier’s live cart.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-secondary" onclick="pocCopyBrownsCart()">Copy order list</button><button class="btn btn-tertiary" onclick="pocExportBrownsCart()">Export CSV</button></div></div>'+
+        (cart.length?'<table><tr><th>Title</th><th>ISBN</th><th>Qty</th><th></th></tr>'+cart.map(r=>'<tr><td>'+esc(r.title)+'</td><td>'+esc(r.isbn||'—')+'</td><td>'+esc(r.quantity||1)+'</td><td><button class="btn btn-tertiary" onclick="pocRemoveFromBrownsCart(\''+r.id+'\')">Remove</button></td></tr>').join('')+'</table>':'<p style="font-size:13px;color:var(--color-text-2)">Add a book below, then use Copy order list or Export CSV to transfer the details into Brown’s Books.</p>')
+      )+
+      card(requests.length?'<table><tr><th>Type</th><th>Title / item</th><th>Author</th><th>Supplier</th><th>Priority</th><th>Status</th><th>Actions</th></tr>'+
+        requests.map((r,i)=>'<tr><td>'+esc(r.itemType||'book')+'</td><td>'+esc(r.title)+'</td><td>'+esc(r.author||'—')+'</td><td>'+esc(r.supplier||'—')+'</td><td>'+esc(r.priority||'Normal')+'</td><td><span class="status-pill '+(r.status==='Ordered'?'ready':'active')+'">'+esc(r.status||'Requested')+'</span></td><td>'+(r.itemType==='other'?'<span style="color:var(--color-text-2)">General request</span>':(r.brownsCart?'<button class="btn btn-tertiary" onclick="pocRemoveFromBrownsCart(\''+r.id+'\')">In Brown’s basket · Remove</button>':'<button class="btn btn-secondary" onclick="pocAddToBrownsCart(\''+r.id+'\')">Add to Brown’s cart</button>'))+' <button class="btn btn-tertiary" onclick="pocOrderAcquisition('+i+')">'+(r.status==='Ordered'?'Ordered':'Mark ordered')+'</button></td></tr>').join('')+'</table>':'<strong>No acquisition requests yet.</strong><p style="font-size:13px;color:var(--color-text-2)">Add a book or another item above to get started.</p>')
     );
   }
+  window.pocAcqTypeChanged=function(){
+    const isBook=document.getElementById('acqType').value==='book';
+    document.getElementById('acqAuthor').disabled=!isBook;
+    document.getElementById('acqIsbn').disabled=!isBook;
+    if(!isBook){document.getElementById('acqSupplier').value='';}
+    else if(!document.getElementById('acqSupplier').value.trim()){document.getElementById('acqSupplier').value='Brown’s Books';}
+  };
   window.pocAddAcquisition=function(){
-    const title=document.getElementById('acqTitle').value.trim(); if(!title){toast('A title is required');return;}
+    const title=document.getElementById('acqTitle').value.trim(); if(!title){toast('A title or item name is required');return;}
+    const itemType=document.getElementById('acqType').value;
+    const quantity=Math.max(1,Math.floor(Number(document.getElementById('acqQuantity').value)||1));
+    const rawPrice=document.getElementById('acqPrice').value;
     db.purchaseRequests=db.purchaseRequests||[];
-    db.purchaseRequests.push({title,author:document.getElementById('acqAuthor').value.trim(),supplier:document.getElementById('acqSupplier').value.trim(),priority:document.getElementById('acqPriority').value,status:'Requested',createdAt:Date.now()});
+    db.purchaseRequests.push({id:crypto.randomUUID(),itemType,title,author:itemType==='book'?document.getElementById('acqAuthor').value.trim():'',isbn:itemType==='book'?document.getElementById('acqIsbn').value.trim():'',quantity,estimatedUnitPrice:rawPrice===''?null:Number(rawPrice),supplier:document.getElementById('acqSupplier').value.trim()||(itemType==='book'?'Brown’s Books':''),priority:document.getElementById('acqPriority').value,status:'Requested',brownsCart:false,createdAt:Date.now()});
     saveDB(db); renderAdminTab('acquisitions'); toast('Acquisition request added');
+  };
+  window.pocAddToBrownsCart=function(id){
+    const item=(db.purchaseRequests||[]).find(r=>r.id===id);
+    if(!item||item.itemType==='other'){toast('Only book requests can be added to the Brown’s Books basket');return;}
+    item.brownsCart=true; item.supplier='Brown’s Books'; saveDB(db); renderAdminTab('acquisitions'); toast('Book added to Hooke’s Brown’s Books basket');
+  };
+  window.pocRemoveFromBrownsCart=function(id){
+    const item=(db.purchaseRequests||[]).find(r=>r.id===id); if(!item)return;
+    item.brownsCart=false; saveDB(db); renderAdminTab('acquisitions'); toast('Removed from Brown’s Books basket');
+  };
+  function brownsCartText(){
+    return (db.purchaseRequests||[]).filter(r=>r.brownsCart===true).map(r=>[r.title,r.author||'',r.isbn||'',r.quantity||1,r.estimatedUnitPrice??''].join('\t')).join('\n');
+  }
+  window.pocCopyBrownsCart=async function(){
+    const items=brownsCartText(); if(!items){toast('The Brown’s Books basket is empty');return;}
+    try{await navigator.clipboard.writeText('Title\tAuthor\tISBN\tQuantity\tEstimated unit price (£)\n'+items);toast('Order list copied. Paste it into your Brown’s Books ordering workflow.');}
+    catch(e){toast('Clipboard access is unavailable. Use Export CSV instead.');}
+  };
+  window.pocExportBrownsCart=function(){
+    const rows=(db.purchaseRequests||[]).filter(r=>r.brownsCart===true);
+    if(!rows.length){toast('The Brown’s Books basket is empty');return;}
+    const csvCell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+    const csv=[['Title','Author','ISBN','Quantity','Estimated unit price GBP'],...rows.map(r=>[r.title,r.author||'',r.isbn||'',r.quantity||1,r.estimatedUnitPrice??''])].map(row=>row.map(csvCell).join(',')).join('\r\n');
+    const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='hooke-browns-books-order.csv';a.click();URL.revokeObjectURL(url);
+    toast('Brown’s Books order CSV exported');
   };
   window.pocOrderAcquisition=function(i){db.purchaseRequests[i].status='Ordered';saveDB(db);renderAdminTab('acquisitions');toast('Marked as ordered');};
 
