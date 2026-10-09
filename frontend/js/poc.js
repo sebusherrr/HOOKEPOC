@@ -2,9 +2,9 @@
    Uses localStorage for safe browser-only demo persistence. Live integrations stay server-side. */
 (function(){
   const modules = {
-    acquisitions:{label:'📦 Acquisitions',section:'Library Operations',roles:['librarian','head_of_library'],render:renderAcquisitions},
-    authority:{label:'🔤 Authority Control',section:'Library Operations',roles:['librarian','head_of_library'],render:renderAuthority},
-    bookReviews:{label:'⭐ Book Reviews',section:'Community',roles:['librarian','head_of_library'],render:renderBookReviews},
+    acquisitions:{label:'Acquisitions',section:'Library Operations',roles:['librarian','head_of_library'],render:renderAcquisitions},
+    authority:{label:'Authority Control',section:'Library Operations',roles:['librarian','head_of_library'],render:renderAuthority},
+    bookReviews:{label:'Book Reviews',section:'Community',roles:['librarian','head_of_library'],render:renderBookReviews},
     manualEntry:{label:'✍ Manual Book Entry',section:'Catalogue',roles:['librarian','head_of_library'],render:renderManualEntry},
     listsAdmin:{label:'📋 Lists',section:'Library Operations',roles:['librarian','head_of_library'],render:renderListsAdmin},
     bookLists:{label:'📚 Book Lists',section:'Library Operations',roles:['librarian','head_of_library'],render:renderBookLists}
