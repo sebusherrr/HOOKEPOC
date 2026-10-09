@@ -4,10 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abingdon School Library</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,480;9..144,560;9..144,620&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=3">
 <link rel="stylesheet" href="frontend/css/styles.css">
 </head>
 <body>
@@ -15,7 +12,7 @@
 <!-- ============= LOGIN ============= -->
 <div id="loginScreen">
   <div class="login-card">
-    <div class="login-crest">A</div>
+    <div class="login-brand"><img src="favicon.svg?v=3" alt="Abingdon School gryphon crest"><span>ABINGDON</span></div>
     <h1>Abingdon School Library</h1>
     <div class="sub">Sign in to your account</div>
     <form id="passwordForm" onsubmit="return handlePasswordLogin(event)">
@@ -25,7 +22,7 @@
       <div class="login-error" id="loginError"></div>
     </form>
 
-    <div class="divider">or continue with</div>
+    <div class="notice demo-note">HOOKE PROOF OF CONCEPT · DEMO ACCOUNTS ONLY</div>
     <button class="oauth-btn" onclick="handleGoogleLogin()">
       <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.3 35.5 24 35.5c-6.4 0-11.6-5.2-11.6-11.6S17.6 12.3 24 12.3c2.9 0 5.6 1.1 7.6 2.9l5.7-5.7C33.6 6.1 29 4.2 24 4.2 12.9 4.2 4 13.1 4 24.2s8.9 20 20 20c11.5 0 19.1-8.1 19.1-19.5 0-1.4-.2-2.6-.5-4.2z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.8 18.9 12.3 24 12.3c2.9 0 5.6 1.1 7.6 2.9l5.7-5.7C33.6 6.1 29 4.2 24 4.2c-7.6 0-14.1 4.3-17.4 10.5z"/><path fill="#4CAF50" d="M24 44.2c5 0 9.5-1.9 13-5l-6-5c-2 1.5-4.5 2.4-7 2.4-5.3 0-9.7-3-11.4-7.2l-6.5 5C9.9 39.9 16.4 44.2 24 44.2z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.3 4.1-4.2 5.4l6 5c-.4.4 6.9-5 6.9-14.4 0-1.4-.2-2.6-.5-4.2z"/></svg>
       Continue with Google
