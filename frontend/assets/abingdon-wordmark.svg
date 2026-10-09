@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="190" viewBox="0 0 620 190" role="img" aria-labelledby="title desc">
+<title id="title">Abingdon School</title><desc id="desc">Abingdon gryphon crest above the Abingdon name</desc>
+<rect width="620" height="190" fill="#fff"/>
+<image href="../../favicon.svg?v=3" x="270" y="4" width="80" height="112" preserveAspectRatio="xMidYMid meet"/>
+<path d="M0 137H247 M373 137H620" stroke="#e5008b" stroke-width="3"/>
+<text x="310" y="179" fill="#111" font-family="Georgia, 'Times New Roman', serif" font-size="49" letter-spacing="10" text-anchor="middle">ABINGDON</text>
+</svg>
