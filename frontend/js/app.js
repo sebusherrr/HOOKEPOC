@@ -22,6 +22,9 @@ function freshDB(){
 }
 function saveDB(db){ try{ localStorage.setItem(DB_KEY, JSON.stringify(db)); }catch(e){} }
 let db = loadDB();
+// Expose the demo store to optional UI modules while keeping the existing API intact.
+Object.defineProperty(window, 'db', { configurable:true, get:()=>db, set:value=>{ db=value; } });
+window.saveDB = saveDB;
 
 function toast(msg){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
@@ -100,6 +103,7 @@ async function handlePasskeyLogin(){
 
 const SESSION_KEY = 'abingdon_session_v1';
 function enterApp(role, name, email){
+  window.currentUser = { role, name, email };
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('rolePill').textContent = role.replace(/_/g,' ').toUpperCase();
