@@ -1,0 +1,72 @@
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function ready(){
+    if(typeof window.db==='undefined'){setTimeout(ready,250);return;}
+    const demoBooks=[
+      {id:'demo-hobbit',title:'The Hobbit',author:'J. R. R. Tolkien',genre:'Fantasy',copies:4,cover:'',yearGroup:'All years'},
+      {id:'demo-holes',title:'Holes',author:'Louis Sachar',genre:'Adventure',copies:3,cover:'',yearGroup:'Years 7–9'},
+      {id:'demo-wonder',title:'Wonder',author:'R. J. Palacio',genre:'Contemporary',copies:3,cover:'',yearGroup:'Years 7–9'},
+      {id:'demo-mockingbird',title:'To Kill a Mockingbird',author:'Harper Lee',genre:'Classic',copies:2,cover:'',yearGroup:'Years 9–13'},
+      {id:'demo-percy',title:'Percy Jackson and the Lightning Thief',author:'Rick Riordan',genre:'Fantasy',copies:4,cover:'',yearGroup:'Years 7–9'},
+      {id:'demo-murder',title:'The Murder of Roger Ackroyd',author:'Agatha Christie',genre:'Mystery',copies:2,cover:'',yearGroup:'Years 9–13'},
+      {id:'demo-hidden',title:'Hidden Figures',author:'Margot Lee Shetterly',genre:'Non-fiction',copies:2,cover:'',yearGroup:'Years 9–13'},
+      {id:'demo-harry',title:'Harry Potter and the Philosopher’s Stone',author:'J. K. Rowling',genre:'Fantasy',copies:3,cover:'',yearGroup:'All years'}
+    ];
+    window.db.books=window.db.books||[];
+    if(!window.db.books.length){window.db.books=demoBooks; if(typeof saveDB==='function')saveDB(window.db);}
+    window.db.studentProfiles=window.db.studentProfiles||{};
+    const user=()=>window.currentUser||window.currentStudent||window.user||{};
+    const profile=()=>{const u=user(),id=u.id||u.email||u.name||'demo-student';window.db.studentProfiles[id]=window.db.studentProfiles[id]||{avatar:'📚',shareStats:false,shareReading:false,shareYear:true,shareFriends:false,sound:false,vibration:false,theme:'system'};return window.db.studentProfiles[id];};
+    function addStyles(){
+      if($('studentExtrasCss'))return;
+      const s=document.createElement('style');s.id='studentExtrasCss';s.textContent=`
+      .student-extra-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.student-extra-nav a{font-size:13px;color:var(--color-text-2);text-decoration:none;padding:7px 9px;border-radius:8px}.student-extra-nav a:hover{background:var(--color-primary-soft);color:var(--color-text)}
+      .student-extra-panel{background:var(--color-surface,#fff);border:1px solid var(--color-border);border-radius:16px;padding:22px;margin:18px 0;box-shadow:0 5px 22px #00000008}.student-extra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.student-extra-panel h2{margin:0 0 8px}.student-extra-panel p{color:var(--color-text-2)}.student-extra-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.student-extra-input{width:100%;padding:10px;border:1px solid var(--color-border);border-radius:9px;background:var(--color-bg,#fff);color:inherit}.avatar-choice{font-size:26px;padding:9px;border:1px solid var(--color-border);border-radius:12px;background:transparent;cursor:pointer}.avatar-choice.selected{border-color:var(--color-primary);background:var(--color-primary-soft)}.signout-text{font-size:13px!important;white-space:nowrap}.genre-filter{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}.privacy-note{font-size:12px;color:var(--color-text-2)}@media(max-width:760px){.student-extra-nav{display:none}.student-extra-panel{padding:16px}}`;
+      document.head.appendChild(s);
+    }
+    function panel(title,body){return '<section class="student-extra-panel"><h2>'+title+'</h2>'+body+'</section>';}
+    function showPage(id,title,html){
+      document.querySelectorAll('[data-student-extra-page]').forEach(e=>e.remove());
+      const page=document.createElement('div');page.dataset.studentExtraPage='1';page.className='container';page.innerHTML='<div style="padding-top:22px"><button class="btn btn-tertiary" onclick="studentExtraHome()">← Back to library</button><h1 style="margin:16px 0 4px">'+title+'</h1>'+html+'</div>';
+      const app=$('app');if(app)app.appendChild(page);
+      document.querySelectorAll('#studentView,#staffView,#librarianView').forEach(e=>e.classList.add('hidden'));
+    }
+    window.studentExtraHome=function(){document.querySelectorAll('[data-student-extra-page]').forEach(e=>e.remove());document.querySelectorAll('#studentView').forEach(e=>e.classList.remove('hidden'));};
+    function addNav(){
+      const nav=$('studentNavLinks');if(nav&&!$('studentExtraNav')){const links=document.createElement('span');links.id='studentExtraNav';links.className='student-extra-nav';links.innerHTML='<a href="#" onclick="studentExtraProfile();return false">Profile</a><a href="#" onclick="studentExtraSettings();return false">Settings</a><a href="#" onclick="studentExtraInfo();return false">Info & help</a>';nav.appendChild(links);}
+      const pill=$('rolePill');if(pill)pill.style.display='none';
+      document.querySelectorAll('.nav-actions button[onclick="logout()"]').forEach(b=>{b.textContent='Sign out';b.classList.add('signout-text');b.title='Sign out';});
+      if(!$('studentSignoutDialog')){const d=document.createElement('dialog');d.id='studentSignoutDialog';d.className='student-extra-panel';d.innerHTML='<h2>Sign out?</h2><p>Are you sure you want to sign out of Abingdon School Library?</p><div class="student-extra-actions"><button class="btn btn-secondary" onclick="document.getElementById(\'studentSignoutDialog\').close()">Cancel</button><button class="btn btn-primary" onclick="document.getElementById(\'studentSignoutDialog\').close();window.studentExtraRealLogout()">Yes, sign out</button></div>';document.body.appendChild(d);}
+      document.querySelectorAll('.nav-actions button[onclick="logout()"]').forEach(b=>{b.onclick=function(e){e.preventDefault();$('studentSignoutDialog').showModal();};});
+      const search=document.querySelector('.hero-search');if(search&&!$('studentGenreFilter')){const f=document.createElement('div');f.id='studentGenreFilter';f.className='genre-filter';f.innerHTML='<label for="studentGenre">Genre</label><select id="studentGenre" class="student-extra-input" style="max-width:220px" onchange="studentFilterGenre(this.value)"><option value="">All genres</option><option>Adventure</option><option>Classic</option><option>Contemporary</option><option>Fantasy</option><option>Historical</option><option>Mystery</option><option>Non-fiction</option><option>Science fiction</option></select>';search.parentNode.appendChild(f);}
+    }
+    const originalLogout=window.logout;
+    window.studentExtraRealLogout=function(){if(typeof originalLogout==='function')originalLogout();};
+    window.studentFilterGenre=function(genre){
+      const books=window.db.books||[];
+      const filtered=books.filter(b=>!genre||String(b.genre||b.category||'').toLowerCase()===genre.toLowerCase());
+      const grid=$('catalogueGrid');if(grid){grid.innerHTML=filtered.map(b=>'<article class="book-card"><div class="book-cover">'+(b.cover?'<img src="'+esc(b.cover)+'" alt="">':'📖')+'</div><h3>'+esc(b.title)+'</h3><p>'+esc(b.author||'Unknown author')+'</p><span class="status-pill active">'+esc(b.genre||b.category||'Uncategorised')+'</span></article>').join('')||'<p>No books found in this genre.</p>';}
+      if(genre){const catalogue=document.querySelector('a[onclick*="catalogue"]');if(catalogue)catalogue.click();}
+    };
+    window.studentExtraProfile=function(){
+      const p=profile(),u=user(),name=u.name||u.fullName||u.email||'Student';
+      const fav=(window.db.books||[]).filter(b=>(window.db.favourites||[]).some(f=>f.bookId===b.id||f===b.id)).length;
+      showPage('profile','My student profile',panel('Your profile','<div style="display:flex;gap:16px;align-items:center"><div style="font-size:48px;background:var(--color-primary-soft);padding:10px 16px;border-radius:18px">'+esc(p.avatar)+'</div><div><h3 style="margin:0">'+esc(name)+'</h3><p style="margin:4px 0">Abingdon School Library member</p><span class="status-pill active">Student account</span></div></div><div class="student-extra-actions"><button class="btn btn-secondary" onclick="studentExtraSettings()">Edit profile & privacy</button></div>')+ '<div class="student-extra-grid">'+panel('Reading activity','<strong>'+(window.db.books||[]).length+'</strong><p>Books currently listed in this demo catalogue</p>')+panel('Your favourites','<strong>'+fav+'</strong><p>Favourite books saved in this browser</p>')+panel('Your community','<p>Send friend requests and choose exactly which reading details you share. Other students’ profile photos and reading stats stay hidden until they accept.</p>')+'</div>'+panel('Friends & requests','<p>Find classmates by school email or display name. Friend connections require the other student to accept before profile photos or shared stats are visible.</p><div class="student-extra-actions"><input id="friendSearch" class="student-extra-input" placeholder="School email or display name" style="max-width:360px"><button class="btn btn-primary" onclick="studentSendFriendRequest()">Request to be friends</button></div><div id="friendRequestResult" class="privacy-note"></div>'));
+    };
+    window.studentSendFriendRequest=function(){const v=$('friendSearch').value.trim();if(!v){$('friendRequestResult').textContent='Enter a school email or display name first.';return;}window.db.friendRequests=window.db.friendRequests||[];window.db.friendRequests.push({to:v,from:user().email||user().name||'Demo student',status:'pending',createdAt:Date.now()});if(typeof saveDB==='function')saveDB(window.db);$('friendRequestResult').textContent='Friend request saved in this browser demo. A live school-wide friend system needs shared backend accounts.';};
+    window.studentExtraSettings=function(){
+      const p=profile();
+      showPage('settings','Student settings',panel('Profile photo','<p>Choose an avatar for your profile. Your photo is only shown to accepted friends when your privacy settings allow it.</p><div class="student-extra-actions">'+['📚','🦉','🦊','🐉','🌿','🌙','⭐','🎨','⚽','🎧','🦁','🐈'].map(a=>'<button class="avatar-choice '+(p.avatar===a?'selected':'')+'" onclick="studentSetAvatar(\''+a+'\')">'+a+'</button>').join('')+'</div>')+panel('Privacy & sharing','<label><input type="checkbox" id="shareStats" '+(p.shareStats?'checked':'')+'> Share my reading statistics with accepted friends</label><p class="privacy-note">Includes reading counts and favourite genres, not private account information.</p><label><input type="checkbox" id="shareReading" '+(p.shareReading?'checked':'')+'> Share the books I am currently reading</label><br><label><input type="checkbox" id="shareYear" '+(p.shareYear?'checked':'')+'> Allow year-group reading trends to include my activity</label><br><label><input type="checkbox" id="shareFriends" '+(p.shareFriends?'checked':'')+'> Let accepted friends see my profile photo</label><div class="student-extra-actions"><button class="btn btn-primary" onclick="studentSavePrivacy()">Save privacy settings</button></div>')+panel('Experience','<label>Appearance</label><select id="studentTheme" class="student-extra-input"><option value="system" '+(p.theme==='system'?'selected':'')+'>System default</option><option value="light" '+(p.theme==='light'?'selected':'')+'>Light</option><option value="dark" '+(p.theme==='dark'?'selected':'')+'>Dark</option></select><p><label><input id="studentSound" type="checkbox" '+(p.sound?'checked':'')+'> Enable interface sounds</label></p><p><label><input id="studentVibration" type="checkbox" '+(p.vibration?'checked':'')+'> Enable vibration where supported</label></p><div class="student-extra-actions"><button class="btn btn-primary" onclick="studentSaveExperience()">Save settings</button></div>')+panel('Account','<p>Passwords and sign-in methods are managed by the account system. Never reuse your school password on another site.</p>'));
+    };
+    window.studentSetAvatar=function(a){profile().avatar=a;if(typeof saveDB==='function')saveDB(window.db);window.studentExtraSettings();};
+    window.studentSavePrivacy=function(){const p=profile();p.shareStats=$('shareStats').checked;p.shareReading=$('shareReading').checked;p.shareYear=$('shareYear').checked;p.shareFriends=$('shareFriends').checked;if(typeof saveDB==='function')saveDB(window.db);toast('Privacy settings saved on this browser');};
+    window.studentSaveExperience=function(){const p=profile();p.theme=$('studentTheme').value;p.sound=$('studentSound').checked;p.vibration=$('studentVibration').checked;document.documentElement.dataset.theme=p.theme;if(typeof saveDB==='function')saveDB(window.db);toast('Experience settings saved on this browser');if(p.vibration&&navigator.vibrate)navigator.vibrate(30);if(p.sound){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=660;g.gain.value=.025;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.08);}catch(e){}}};
+    window.studentExtraInfo=function(){showPage('info','Information & helpful links',panel('About Hooke','<p>Hooke is an Abingdon School Library proof of concept. Catalogue, profile and settings data in this version may be stored only in this browser and are not a live school-wide service.</p>')+panel('Helpful reading sites','<ul><li><a href="https://www.gutenberg.org/" target="_blank" rel="noopener">Project Gutenberg</a> — free public-domain ebooks</li><li><a href="https://openlibrary.org/" target="_blank" rel="noopener">Open Library</a> — discover books and editions</li><li><a href="https://www.worldbookday.com/" target="_blank" rel="noopener">World Book Day</a> — reading ideas and activities</li><li><a href="https://www.scholastic.com/teachers/teaching-tools/book-lists.html" target="_blank" rel="noopener">Scholastic book lists</a> — themed recommendations</li></ul>')+panel('Privacy & support','<p>Only share reading activity with people you trust. If you have a question about a real library account, contact the school library team.</p>'))};
+    addStyles();addNav();
+    // Reapply controls after existing UI rerenders.
+    const obs=new MutationObserver(()=>addNav());obs.observe(document.body,{childList:true,subtree:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
+})();
