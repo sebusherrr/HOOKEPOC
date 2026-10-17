@@ -194,6 +194,14 @@ Hooke/
 │   ├── package.json
 │   └── README.md
 │
+├── archive/
+│   └── exports/                 # Downloadable project snapshots
+│
+├── docs/
+│   ├── community/               # Contact and community guidance
+│   ├── project/                 # Contribution, security and release notes
+│   └── technical/               # Architecture, API, database and deployment docs
+│
 ├── frontend/
 │   │
 │   ├── index.html
@@ -447,11 +455,11 @@ Contributions should prioritise:
 
 Start with the [Documentation Index](docs/README.md) for a guide to the project's documentation. Detailed project documentation is available in the `docs/` directory:
 
-- [Architecture](docs/architecture.md) — application layers and system design.
-- [API Reference](docs/api.md) — API principles and resource areas.
-- [Database](docs/database.md) — Prisma models and data relationships.
-- [Development Guide](docs/development.md) — local setup and development workflow.
-- [Deployment](docs/deployment.md) — production deployment guidance and checklist.
+- [Architecture](docs/technical/architecture.md) — application layers and system design.
+- [API Reference](docs/technical/api.md) — API principles and resource areas.
+- [Database](docs/technical/database.md) — Prisma models and data relationships.
+- [Development Guide](docs/technical/development.md) — local setup and development workflow.
+- [Deployment](docs/technical/deployment.md) — production deployment guidance and checklist.
 - [Contributing](docs/project/CONTRIBUTING.md) — contribution and pull-request standards.
 - [Security Policy](docs/project/SECURITY.md) — vulnerability reporting and security principles.
 - [Changelog](docs/project/CHANGELOG.md) — project history and planned release tracking.
