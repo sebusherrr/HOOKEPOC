@@ -125,7 +125,7 @@ function enterApp(role, name, email){
   } else {
     document.getElementById('studentView').classList.remove('hidden');
     document.getElementById('studentNavLinks').classList.remove('hidden');
-    renderStudentHome(); renderCatalogueTab(); renderMyLibrary('loans'); renderLists();
+    renderStudentHome(); renderMyLibrary('loans'); renderLists();
   }
   try{ localStorage.setItem(SESSION_KEY, JSON.stringify({role,name,email})); }catch(e){}
   if(email) checkWelcome(email, name);
@@ -148,8 +148,10 @@ function logout(){
 /* ---------------- STUDENT: nav ---------------- */
 function showStudentTab(name, el){
   document.querySelectorAll('#studentNavLinks a').forEach(a=>a.classList.remove('active'));
-  el.classList.add('active');
+  if(el)el.classList.add('active');
   ['home','catalogue','mylibrary','lists'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('hidden', t!==name));
+  if(name==='catalogue')renderCatalogueTab();
+  if(name==='home')renderStudentHome();
 }
 
 function emptyStateHTML(icon,title,body,cta,ctaFn){
@@ -164,7 +166,8 @@ function renderStudentHome(){
     rails.innerHTML='';
   } else {
     el.innerHTML='';
-    rails.innerHTML = `<div class="grid-books">${db.books.map(bookCard).join('')}</div>`;
+    const featured=db.books.slice(0,12);
+    rails.innerHTML = `<div class="grid-books">${featured.map(bookCard).join('')}</div>${db.books.length>12?`<p class="catalogue-more">Showing 12 of ${db.books.length} books. <button class="btn btn-outline" onclick="showStudentTab('catalogue',document.querySelector('#studentNavLinks a[onclick*=\\\"catalogue\\\"]'))">Browse the full catalogue</button></p>`:''}`;
   }
 }
 function renderCatalogueTab(){
