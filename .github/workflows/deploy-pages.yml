@@ -30,7 +30,7 @@ jobs:
       - name: Assemble the static website
         run: |
           mkdir -p _site
-          cp index.html favicon.svg favicon.png .nojekyll _site/
+          cp index.html .nojekyll _site/
           cp -R frontend _site/frontend
 
       - name: Upload static website only
