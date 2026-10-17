@@ -167,7 +167,7 @@ function renderStudentHome(){
   } else {
     el.innerHTML='';
     const featured=db.books.slice(0,12);
-    rails.innerHTML = `<div class="grid-books">${featured.map(bookCard).join('')}</div>${db.books.length>12?`<p class="catalogue-more">Showing 12 of ${db.books.length} books. <button class="btn btn-outline" onclick="showStudentTab('catalogue',document.querySelector('#studentNavLinks a[onclick*=\\\"catalogue\\\"]'))">Browse the full catalogue</button></p>`:''}`;
+    rails.innerHTML = `<div class="grid-books">${featured.map(bookCard).join('')}</div>${db.books.length>12?`<p class="catalogue-more">Showing 12 of ${db.books.length} books. <button class="btn btn-outline" onclick="showStudentTab('catalogue',document.querySelectorAll('#studentNavLinks a')[1])">Browse the full catalogue</button></p>`:''}`;
   }
 }
 function renderCatalogueTab(){
