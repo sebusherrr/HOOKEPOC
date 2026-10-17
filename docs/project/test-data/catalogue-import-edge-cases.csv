@@ -1,0 +1,11 @@
+title,author,isbn,copies,cover,genre,year_group,publisher,publication_year,language,format,shelf,description,keywords,reading_age,pages,edition
+"Comma, title test",Test Author,TEST-ISBN-001,2,,Test,Years 7–9,,,English,Paperback,TEST-01,Checks quoted commas in a field.,csv;comma,9+,,Test record
+"Quote ""inside"" title",Test Author,TEST-ISBN-002,1,,Test,Years 7–9,,,English,Paperback,TEST-02,Checks escaped double quotes.,csv;quotes,9+,,Test record
+Café in the City,Zoë Test,TEST-ISBN-003,3,,Test,Years 7–9,,,French / English,Paperback,TEST-03,"Checks accents and non-ASCII characters: naïve, café, 東京.",csv;unicode,9+,,Test record
+A Very Long Title for Responsive Layout and Wrapping Checks on Narrow Screens,Test Author,TEST-ISBN-004,1,,Test,Years 9–13,,,English,Paperback,TEST-04,Checks title wrapping and mobile card layout.,csv;long-title,13+,,Test record
+Duplicate ISBN second record,Test Author,TEST-ISBN-001,2,,Test,Years 7–9,,,English,Paperback,TEST-05,Should be skipped when the first TEST-ISBN-001 is already imported.,csv;duplicate,9+,,Test record
+Zero Copies Record,Test Author,TEST-ISBN-005,0,,Test,Years 9–13,,,English,Paperback,TEST-06,Zero copies is allowed and should render as unavailable when availability rules are added.,csv;zero-copies,13+,,Test record
+Missing Author,,TEST-ISBN-006,1,,Test,Years 7–9,,,English,Paperback,TEST-07,Expected to be rejected by validation because author is missing.,csv;invalid,9+,,Test record
+Negative Copies,Test Author,TEST-ISBN-007,-1,,Test,Years 7–9,,,English,Paperback,TEST-08,Expected to be rejected by validation because copies cannot be negative.,csv;invalid,9+,,Test record
+Non-numeric Copies,Test Author,TEST-ISBN-008,many,,Test,Years 7–9,,,English,Paperback,TEST-09,Expected to be rejected by validation because copies must be numeric.,csv;invalid,9+,,Test record
+<img src=x onerror=alert(1)>,Test Author,TEST-ISBN-009,1,,Test,Years 9–13,,,English,Paperback,TEST-10,"Harmless XSS regression string: it must display as text, never execute.",security;xss-test,13+,,Test record
