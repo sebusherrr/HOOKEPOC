@@ -174,15 +174,18 @@ function renderCatalogueTab(){
     grid.innerHTML='';
   } else { el.innerHTML=''; grid.innerHTML = db.books.map(bookCard).join(''); }
 }
-function coverHTML(b){ return b.cover?`<img src="${b.cover}" style="width:100%;height:100%;object-fit:cover;" alt="">`:`<div class="fallback-cover"><div class="t">${b.title}</div><div class="a">${b.author}</div></div>`; }
+function escapeHTML(value){return String(value??'').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[ch]));}
+function safeCoverURL(value){try{const u=new URL(String(value||''),location.href);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch(e){return '';}}
+function coverHTML(b){ const cover=safeCoverURL(b.cover); return cover?`<img loading=\"lazy\" decoding=\"async\" src=\"${escapeHTML(cover)}\" style=\"width:100%;height:100%;object-fit:cover;\" alt=\"\">`:`<div class=\"fallback-cover\"><div class=\"t\">${escapeHTML(b.title)}</div><div class=\"a\">${escapeHTML(b.author)}</div></div>`; }
 function bookCard(b){
-  return `<div class="book-card"><div class="book-cover-wrap">${coverHTML(b)}</div>
-    <div class="book-meta"><div class="title">${b.title}</div><div class="author">${b.author}</div>
-    <div class="avail-row"><span class="avail-dot"></span>${b.copies} ${b.copies==1?'copy':'copies'}</div></div>
-    <div style="display:flex;gap:6px;margin-top:8px;">
-      <button class="btn btn-primary" style="flex:1;justify-content:center;padding:6px 0;font-size:12px;" onclick="api_borrow('${b.id}')">Borrow</button>
-      <button class="btn btn-outline" style="padding:6px 8px;font-size:12px;" onclick="api_favourite('${b.id}')">♡</button>
-    </div></div>`;
+  const id=String(b.id||'').replace(/[^a-zA-Z0-9_-]/g,'');
+  const title=escapeHTML(b.title),author=escapeHTML(b.author),copies=Math.max(0,Number(b.copies)||0);
+  return `<article class=\"book-card\"><div class=\"book-cover-wrap\">${coverHTML(b)}</div>
+    <div class=\"book-meta\"><div class=\"title\">${title}</div><div class=\"author\">${author}</div>
+    <div class=\"avail-row\"><span class=\"avail-dot\"></span>${copies} ${copies===1?'copy':'copies'}</div></div>
+    <div class=\"book-card-actions\"><button class=\"btn btn-primary\" onclick=\"api_borrow('${id}')\">Borrow</button>
+      <button class=\"btn btn-outline\" onclick=\"api_favourite('${id}')\" aria-label=\"Add ${title} to favourites\">♡</button>
+    </div></article>`;
 }
 // api_borrow ↔ real: POST /reservations or a loan endpoint depending on availability
 function api_borrow(id){
