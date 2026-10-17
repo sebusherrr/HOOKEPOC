@@ -1,15 +1,15 @@
 :root{
-  --color-primary:#E64097; --color-primary-hover:#C9337F; --color-primary-soft:#FCE8F1;
-  --color-black:#1A1A1A; --color-steel:#80A1B6; --color-steel-dark:#5C7F94; --color-steel-soft:#EAF0F3;
+  --color-primary:#214D6B; --color-primary-hover:#173B53; --color-primary-soft:#EAF1F5;
+  --color-black:#17212B; --color-steel:#78909C; --color-steel-dark:#486475; --color-steel-soft:#EDF2F5;
   --color-silver:#B2B2B2; --color-silver-soft:#E9E9E7;
-  --color-bg:#F6F7F6; --color-surface:#FFFFFF; --color-glass:rgba(255,255,255,0.66);
-  --color-text:#1A1A1A; --color-text-2:#5A5D5C; --color-text-3:#8B8E8D; --color-border:#E3E4E2;
+  --color-bg:#F5F7F9; --color-surface:#FFFFFF; --color-glass:#FFFFFF;
+  --color-text:#17212B; --color-text-2:#52616D; --color-text-3:#74818B; --color-border:#DCE3E8;
   --color-success:#2F7D5A; --color-warning:#946200; --color-error:#C0392B;
-  --shadow-card:0 1px 2px rgba(26,26,26,.06),0 6px 16px rgba(26,26,26,.06);
-  --shadow-glass:0 8px 30px rgba(26,26,26,.10);
-  --radius-sm:8px; --radius-md:12px; --radius-lg:18px;
+  --shadow-card:0 1px 2px rgba(23,33,43,.06);
+  --shadow-glass:0 2px 8px rgba(23,33,43,.06);
+  --radius-sm:6px; --radius-md:10px; --radius-lg:12px;
   --ease:cubic-bezier(.2,.7,.3,1);
-  --font-display:Georgia,'Times New Roman',serif; --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  --font-display:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif; --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
@@ -164,3 +164,40 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 .login-brand .login-wordmark{display:block;width:min(320px,100%);height:auto;max-height:none;object-fit:contain;border-radius:0}
+
+
+/* Product polish and performance: solid surfaces, restrained colour, no expensive blur. */
+#loginScreen{background:var(--color-bg);padding:24px;}
+.login-card{max-width:420px;border-radius:10px;box-shadow:0 2px 10px rgba(23,33,43,.06);padding:32px;}
+.login-card h1,.hero-greeting,.admin-header h2,.empty-state h4{font-family:var(--font-body);font-weight:650;letter-spacing:-.025em;}
+.nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:#fff;}
+.nav-inner{gap:20px;padding-top:11px;padding-bottom:11px;}
+.wordmark{font-family:var(--font-body);font-weight:650;letter-spacing:-.02em;}
+.wordmark .crest{border-radius:4px;background:var(--color-primary);}
+.hero-search{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border-radius:8px;}
+.card,.panel,.module-card{box-shadow:0 1px 2px rgba(23,33,43,.04);border-radius:10px;}
+.btn-primary{background:var(--color-primary);}
+.btn-primary:hover{background:var(--color-primary-hover);}
+.btn-secondary{border:1px solid #B9C8D1;color:#294E65;}
+.admin-nav-item.active{background:#EAF1F5;color:#214D6B;}
+.demo-note{background:#F0F3F5;border-color:#DCE3E8;color:#405361;letter-spacing:.035em;}
+.fallback-cover{background:#344F62;color:#fff;}
+.book-card{min-width:0;}
+.book-card-actions{display:flex;gap:6px;margin-top:8px;}
+.book-card-actions .btn{min-width:0;justify-content:center;padding:6px 8px;font-size:12px;}
+.book-card-actions .btn-primary{flex:1;}
+.book-cover-wrap img{display:block;}
+table{font-variant-numeric:tabular-nums;}
+input,select,textarea{accent-color:var(--color-primary);}
+@media(max-width:760px){
+  .nav-inner{padding:10px 14px;gap:10px;flex-wrap:wrap;}
+  .nav-links{gap:12px;overflow-x:auto;white-space:nowrap;}
+  .nav-actions{margin-left:auto;}
+  .admin-main{padding:20px 16px;}
+  .admin-sidebar{padding:12px 10px;}
+  .csv-drop{padding:18px 12px;}
+}
+@media(prefers-reduced-motion:reduce){
+  html:focus-within{scroll-behavior:auto;}
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
+}
