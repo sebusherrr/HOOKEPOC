@@ -15,7 +15,7 @@ npm run dev                 # starts the API on :4000
 
 ## Docker / GitHub Container Registry
 
-The repository workflow builds the backend container and publishes it to GitHub Container Registry (GHCR) on pushes to `main` and version tags (`v*). Pull requests build the image for validation but do not publish it.
+The repository workflow builds the backend container and publishes it to GitHub Container Registry (GHCR) on pushes to `main` and version tags (`v*`). Pull requests build the image for validation but do not publish it.
 
 Published image:
 
