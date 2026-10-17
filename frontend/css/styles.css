@@ -201,3 +201,6 @@ input,select,textarea{accent-color:var(--color-primary);}
   html:focus-within{scroll-behavior:auto;}
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
 }
+
+.catalogue-more{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0 28px;color:var(--color-text-2);font-size:13px;}
+.catalogue-more .btn{font-size:12.5px;}
