@@ -22,7 +22,7 @@ The source code, issues and project development are available on the Hooke repos
 
 ### Security issues
 
-Please **do not** report security vulnerabilities through public GitHub issues. See the [Security Policy](SECURITY.md) for the appropriate reporting process.
+Please **do not** report security vulnerabilities through public GitHub issues. See the [Security Policy](../../SECURITY.md) for the appropriate reporting process.
 
 ---
 

@@ -445,7 +445,7 @@ Contributions should prioritise:
 
 ## Documentation
 
-Detailed project documentation is available in the `docs/` directory:
+Start with the [Documentation Index](docs/README.md) for a guide to the project's documentation. Detailed project documentation is available in the `docs/` directory:
 
 - [Architecture](docs/architecture.md) — application layers and system design.
 - [API Reference](docs/api.md) — API principles and resource areas.
@@ -464,7 +464,7 @@ For questions, feedback, suggestions or enquiries about Hooke, contact the proje
 
 **[seb.usher@abingdon.org.uk](mailto:seb.usher@abingdon.org.uk)**
 
-See the full [Contact](CONTACT.md) page for more information. For security vulnerabilities, please follow the [Security Policy](SECURITY.md) rather than opening a public issue.
+See the full [Contact](docs/community/contact.md) page for more information. For security vulnerabilities, please follow the [Security Policy](SECURITY.md) rather than opening a public issue.
 
 ---
 
