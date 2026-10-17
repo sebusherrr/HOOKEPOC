@@ -6,7 +6,7 @@
   ADMIN_TABS.import.label = '⬆ Book CSV Import';
   ADMIN_TABS.printcodes = {
     label:'🖨 Student Print Codes', section:'Community',
-    roles:['librarian','head_of_library'], render:adminPrintCodes
+    roles:['librarian','head_of_library'], render:function(){return window.adminPrintCodes();}
   };
 
   function esc(v){
