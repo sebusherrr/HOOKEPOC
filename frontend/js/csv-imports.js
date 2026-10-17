@@ -57,6 +57,7 @@
       '<div id="csvPreview" style="margin-top:16px"></div></div>'+
       '<div class="card"><strong>Excel upload tips</strong><ul style="margin-bottom:0;color:var(--color-text-2);font-size:13px"><li>In Excel choose File → Save As → CSV UTF-8 (Comma delimited) (*.csv).</li><li>Upload the .csv file, not the original .xlsx workbook.</li><li>The first row must contain column headers such as title and author.</li><li>Quoted fields containing commas are supported.</li></ul></div>';
   };
+  ADMIN_TABS.import.render=window.adminImport;
   window.clearBookCSV=function(){document.getElementById('csvInput').value='';document.getElementById('bookCsvFile').value='';document.getElementById('csvPreview').innerHTML='';};
   window.parseCSV=function(){
     var p=parseText(document.getElementById('csvInput').value);window._bookCSVError=p.error;
@@ -156,9 +157,9 @@
     if(typeof oldProfile==='function')oldProfile();
     var u=window.currentUser||{},email=String(u.email||'').toLowerCase();
     var rec=(db.printCodes||[]).find(function(r){return r.email&&r.email.toLowerCase()===email;});
-    var main=document.getElementById('student-extra-content')||document.querySelector('.student-extra-page');
+    var main=document.querySelector('[data-student-extra-page]');
     if(!rec||!main)return;
-    var card=document.createElement('div');card.className='card';card.style.marginTop='14px';
+    var card=document.createElement('section');card.className='student-extra-panel';card.style.marginTop='14px';
     card.innerHTML='<h3>Printer access</h3><p>Your six-digit school printer code is available below. Keep it private.</p><div style="font-size:26px;font-weight:650;letter-spacing:.18em">'+esc(rec.code)+'</div>';
     main.appendChild(card);
   };
