@@ -163,4 +163,4 @@ button,.btn{transition:background-color .15s ease,border-color .15s ease,box-sha
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #2879b9;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
-.login-brand .login-wordmark{display:block;width:min(260px,100%);height:auto;max-height:150px;object-fit:contain;border-radius:0}
+.login-brand .login-wordmark{display:block;width:min(320px,100%);height:auto;max-height:none;object-fit:contain;border-radius:0}
