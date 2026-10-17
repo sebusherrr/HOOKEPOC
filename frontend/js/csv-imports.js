@@ -8,6 +8,7 @@
     label:'🖨 Student Print Codes', section:'Community',
     roles:['librarian','head_of_library'], render:function(){return window.adminPrintCodes();}
   };
+  if(window.currentUser&&['librarian','head_of_library'].includes(window.currentUser.role))renderAdminSidebar(window.currentUser.role);
 
   function esc(v){
     return String(v == null ? '' : v).replace(/[&<>"']/g,function(c){
