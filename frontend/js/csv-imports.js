@@ -52,7 +52,7 @@
     return '<div class="admin-header"><h2>Book CSV Import</h2></div>'+
       '<div class="notice">This proof of concept saves imported books in this browser only; it does not update a live school database.</div>'+
       '<div class="card"><div class="field"><label for="bookCsvFile">Choose a CSV file exported from Excel</label><input id="bookCsvFile" type="file" accept=".csv,text/csv" onchange="readBookCSVFile(this.files[0])"></div>'+
-      '<div class="csv-drop">Or paste CSV text below<br><span style="font-size:11.5px">Required columns: title, author. Optional: isbn, copies, cover. Headers are case-insensitive.</span></div>'+
+      '<div class="csv-drop">Or paste CSV text below<br><span style="font-size:11.5px">Required columns: title, author. Optional: isbn, copies, cover, genre, year_group, publisher, publication_year, language, format, shelf, description, keywords, reading_age, pages, edition. Headers are case-insensitive.</span></div>'+
       '<textarea id="csvInput" rows="7" placeholder="title,author,isbn,copies&#10;Never Let Me Go,Kazuo Ishiguro,9780571273188,2"></textarea>'+
       '<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-secondary" onclick="previewCSV()">Preview and validate</button><button class="btn btn-primary" onclick="commitCSV()">Import valid rows</button><button class="btn btn-tertiary" onclick="clearBookCSV()">Clear</button></div>'+
       '<div id="csvPreview" style="margin-top:16px"></div></div>'+
@@ -63,7 +63,7 @@
   window.parseCSV=function(){
     var p=parseText(document.getElementById('csvInput').value);window._bookCSVError=p.error;
     return p.rows.map(function(r){
-      return Object.assign({},r,{title:r.title||r.book_title||r.name||'',author:r.author||r.authors||'',isbn:r.isbn||r.isbn13||r.isbn_13||'',copies:r.copies||r.copy_count||r.quantity||'1',cover:r.cover||r.cover_url||r.image_url||''});
+      return Object.assign({},r,{title:r.title||r.book_title||r.name||'',author:r.author||r.authors||'',isbn:r.isbn||r.isbn13||r.isbn_13||'',copies:r.copies||r.copy_count||r.quantity||'1',cover:r.cover||r.cover_url||r.image_url||'',genre:r.genre||r.category||'',yearGroup:r.year_group||r.yeargroup||r.audience||'',publisher:r.publisher||'',publicationYear:r.publication_year||r.year||'',language:r.language||'English',format:r.format||'Paperback',shelf:r.shelf||r.shelf_location||'',description:r.description||r.summary||'',keywords:r.keywords||r.tags||'',readingAge:r.reading_age||r.age_range||'',pages:r.pages||'',edition:r.edition||''});
     });
   };
   window.previewCSV=function(){
@@ -86,7 +86,7 @@
       var copies=Number(r.copies||1);
       if(!r.title||!r.author||!Number.isFinite(copies)||copies<0){failed++;errors.push('Line '+r._line+': '+(!r.title?'missing title':!r.author?'missing author':'invalid copies value'));return;}
       if(r.isbn&&db.books.some(function(b){return String(b.isbn||'').trim()===r.isbn;})){dup++;return;}
-      db.books.push({id:crypto.randomUUID(),title:r.title,author:r.author,isbn:r.isbn,copies:Math.floor(copies),cover:r.cover||''});added++;
+      db.books.push({id:crypto.randomUUID(),title:r.title,author:r.author,isbn:r.isbn,copies:Math.floor(copies),cover:r.cover||'',genre:r.genre,yearGroup:r.yearGroup,publisher:r.publisher,publicationYear:r.publicationYear,language:r.language,format:r.format,shelf:r.shelf,description:r.description,keywords:r.keywords,readingAge:r.readingAge,pages:r.pages,edition:r.edition});added++;
     });
     saveDB(db);
     el.innerHTML='<div class="notice">Import finished: <strong>'+added+' added</strong>, '+dup+' duplicate ISBN(s) skipped, '+failed+' invalid row(s) skipped.</div>'+
