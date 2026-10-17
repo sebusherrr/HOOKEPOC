@@ -152,15 +152,17 @@
 
   // The student's profile can match a code by the signed-in email. This is only a
   // browser-demo display; real deployments must fetch it after server-side authorisation.
-  var oldProfile=window.studentExtraProfile;
-  window.studentExtraProfile=function(){
-    if(typeof oldProfile==='function')oldProfile();
-    var u=window.currentUser||{},email=String(u.email||'').toLowerCase();
-    var rec=(db.printCodes||[]).find(function(r){return r.email&&r.email.toLowerCase()===email;});
-    var main=document.querySelector('[data-student-extra-page]');
-    if(!rec||!main)return;
-    var card=document.createElement('section');card.className='student-extra-panel';card.style.marginTop='14px';
-    card.innerHTML='<h3>Printer access</h3><p>Your six-digit school printer code is available below. Keep it private.</p><div style="font-size:26px;font-weight:650;letter-spacing:.18em">'+esc(rec.code)+'</div>';
-    main.appendChild(card);
-  };
+  window.addEventListener('load',function(){
+    var oldProfile=window.studentExtraProfile;
+    window.studentExtraProfile=function(){
+      if(typeof oldProfile==='function')oldProfile();
+      var u=window.currentUser||{},email=String(u.email||'').toLowerCase();
+      var rec=(db.printCodes||[]).find(function(r){return r.email&&r.email.toLowerCase()===email;});
+      var main=document.querySelector('[data-student-extra-page]');
+      if(!rec||!main||main.querySelector('[data-printer-code-card]'))return;
+      var card=document.createElement('section');card.className='student-extra-panel';card.dataset.printerCodeCard='1';card.style.marginTop='14px';
+      card.innerHTML='<h2>Printer access</h2><p>Your six-digit school printer code is shown below. Keep it private.</p><div style="font-size:26px;font-weight:650;letter-spacing:.18em">'+esc(rec.code)+'</div>';
+      main.appendChild(card);
+    };
+  });
 })();
