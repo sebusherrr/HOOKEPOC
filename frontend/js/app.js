@@ -174,7 +174,7 @@ function renderCatalogueTab(){
     grid.innerHTML='';
   } else { el.innerHTML=''; grid.innerHTML = db.books.map(bookCard).join(''); }
 }
-function escapeHTML(value){return String(value??'').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[ch]));}
+function escapeHTML(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
 function safeCoverURL(value){try{const u=new URL(String(value||''),location.href);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch(e){return '';}}
 function coverHTML(b){ const cover=safeCoverURL(b.cover); return cover?`<img loading=\"lazy\" decoding=\"async\" src=\"${escapeHTML(cover)}\" style=\"width:100%;height:100%;object-fit:cover;\" alt=\"\">`:`<div class=\"fallback-cover\"><div class=\"t\">${escapeHTML(b.title)}</div><div class=\"a\">${escapeHTML(b.author)}</div></div>`; }
 function bookCard(b){
