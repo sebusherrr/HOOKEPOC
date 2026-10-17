@@ -6,7 +6,7 @@ Hooke is developed as a structured software project, so changes should be delibe
 
 ## Before You Start
 
-1. Read the main [README](README.md).
+1. Read the main [README](../../README.md).
 2. Check existing issues and the project roadmap.
 3. Avoid duplicating work already in progress.
 4. Never commit secrets, credentials or production environment files.
@@ -46,4 +46,4 @@ Use the Bug Report issue template and include reproduction steps, expected behav
 
 ## Security
 
-Do not publicly disclose security vulnerabilities through normal issues. Follow [SECURITY.md](SECURITY.md).
+Do not publicly disclose security vulnerabilities through normal issues. Follow [security policy](SECURITY.md).

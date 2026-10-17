@@ -13,10 +13,10 @@ Welcome to the HOOKE project documentation. This directory contains technical gu
 ## Project information
 
 - [Contact the project maintainer](community/contact.md)
-- [Changelog](../CHANGELOG.md)
-- [Contributing Guidelines](../CONTRIBUTING.md)
-- [Code of Conduct](../CODE_OF_CONDUCT.md)
-- [Security Policy](../SECURITY.md)
+- [Changelog](project/CHANGELOG.md)
+- [Contributing Guidelines](project/CONTRIBUTING.md)
+- [Code of Conduct](project/CODE_OF_CONDUCT.md)
+- [Security Policy](project/SECURITY.md)
 
 ## Component-specific guides
 
@@ -25,4 +25,4 @@ Welcome to the HOOKE project documentation. This directory contains technical gu
 
 ## Repository layout
 
-Keep the root-level `README.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` in place. GitHub recognises these standard filenames and surfaces them in the repository interface. Component READMEs remain beside their code so developers can find setup notes where they work.
+The root contains only the main `README.md`. Supporting project policies and history live in `docs/project/`, while component READMEs remain beside their code so developers can find setup notes where they work.

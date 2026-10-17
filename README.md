@@ -452,9 +452,9 @@ Start with the [Documentation Index](docs/README.md) for a guide to the project'
 - [Database](docs/database.md) — Prisma models and data relationships.
 - [Development Guide](docs/development.md) — local setup and development workflow.
 - [Deployment](docs/deployment.md) — production deployment guidance and checklist.
-- [Contributing](CONTRIBUTING.md) — contribution and pull-request standards.
-- [Security Policy](SECURITY.md) — vulnerability reporting and security principles.
-- [Changelog](CHANGELOG.md) — project history and planned release tracking.
+- [Contributing](docs/project/CONTRIBUTING.md) — contribution and pull-request standards.
+- [Security Policy](docs/project/SECURITY.md) — vulnerability reporting and security principles.
+- [Changelog](docs/project/CHANGELOG.md) — project history and planned release tracking.
 
 ---
 
@@ -464,7 +464,7 @@ For questions, feedback, suggestions or enquiries about Hooke, contact the proje
 
 **[seb.usher@abingdon.org.uk](mailto:seb.usher@abingdon.org.uk)**
 
-See the full [Contact](docs/community/contact.md) page for more information. For security vulnerabilities, please follow the [Security Policy](SECURITY.md) rather than opening a public issue.
+See the full [Contact](docs/community/contact.md) page for more information. For security vulnerabilities, please follow the [Security Policy](docs/project/SECURITY.md) rather than opening a public issue.
 
 ---
 
