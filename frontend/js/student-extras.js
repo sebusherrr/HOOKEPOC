@@ -3,7 +3,7 @@
   const $=id=>document.getElementById(id);
   const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   function ready(){
-    if(typeof window.db==='undefined'){setTimeout(ready,250);return;}
+    if(typeof window.db==='undefined')return;
     const demoBooks=[
       {id:'demo-hobbit',title:'The Hobbit',author:'J. R. R. Tolkien',genre:'Fantasy',copies:4,cover:'',yearGroup:'All years'},
       {id:'demo-holes',title:'Holes',author:'Louis Sachar',genre:'Adventure',copies:3,cover:'',yearGroup:'Years 7–9'},
@@ -65,8 +65,8 @@
     window.studentSaveExperience=function(){const p=profile();p.theme=$('studentTheme').value;p.sound=$('studentSound').checked;p.vibration=$('studentVibration').checked;document.documentElement.dataset.theme=p.theme;if(typeof saveDB==='function')saveDB(window.db);toast('Experience settings saved on this browser');if(p.vibration&&navigator.vibrate)navigator.vibrate(30);if(p.sound){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=660;g.gain.value=.025;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.08);}catch(e){}}};
     window.studentExtraInfo=function(){showPage('info','Information & helpful links',panel('About Hooke','<p>Hooke is an Abingdon School Library proof of concept. Catalogue, profile and settings data in this version may be stored only in this browser and are not a live school-wide service.</p>')+panel('Helpful reading sites','<ul><li><a href="https://www.gutenberg.org/" target="_blank" rel="noopener">Project Gutenberg</a> — free public-domain ebooks</li><li><a href="https://openlibrary.org/" target="_blank" rel="noopener">Open Library</a> — discover books and editions</li><li><a href="https://www.worldbookday.com/" target="_blank" rel="noopener">World Book Day</a> — reading ideas and activities</li><li><a href="https://www.scholastic.com/teachers/teaching-tools/book-lists.html" target="_blank" rel="noopener">Scholastic book lists</a> — themed recommendations</li></ul>')+panel('Privacy & support','<p>Only share reading activity with people you trust. If you have a question about a real library account, contact the school library team.</p>'))};
     addStyles();addNav();
-    // Reapply controls after existing UI rerenders.
-    const obs=new MutationObserver(()=>addNav());obs.observe(document.body,{childList:true,subtree:true});
+    // Navigation is static in index.html, so wire it once rather than observing every DOM mutation.
+
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })();
