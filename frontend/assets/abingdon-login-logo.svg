@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="380" viewBox="0 0 600 380" role="img" aria-labelledby="title desc">
 <title id="title">Abingdon School crest and wordmark</title>
 <desc id="desc">The Abingdon gryphon crest above the ABINGDON wordmark, with fine pink rules to either side.</desc>
-<rect width="600" height="380" fill="#ffffff"/>
+
 <image href="../../favicon.svg?v=4" x="225" y="4" width="150" height="245" preserveAspectRatio="xMidYMid meet"/>
-<path d="M0 286H220 M380 286H600" fill="none" stroke="#e5008b" stroke-width="1.5"/>
-<text x="300" y="355" fill="#1a1718" font-family="Georgia, 'Times New Roman', serif" font-size="66" letter-spacing="12" text-anchor="middle">ABINGDON</text>
+<path d="M0 286H220 M380 286H600" fill="none" stroke="#E64097" stroke-width="1.5"/>
+<text x="300" y="355" fill="#1a1718" font-family="Georgia, 'Times New Roman', serif" font-size="60" font-weight="400" letter-spacing="10" text-anchor="middle">ABINGDON</text>
 </svg>
