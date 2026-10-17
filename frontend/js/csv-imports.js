@@ -75,7 +75,7 @@
     var dupes=valid.filter(function(r){return r.isbn&&db.books.some(function(b){return String(b.isbn||'').trim()===r.isbn;});}).length;
     el.innerHTML='<div class="notice">'+rows.length+' row(s) · '+valid.length+' valid · '+(checked.length-valid.length)+' invalid · '+dupes+' existing ISBN duplicate(s), which will be skipped.</div>'+
       '<div style="overflow-x:auto"><table><tr><th>Line</th><th>Title</th><th>Author</th><th>ISBN</th><th>Copies</th><th>Validation</th></tr>'+
-      checked.slice(0,100).map(function(r){return '<tr><td>'+r._line+'</td><td>'+esc(r.title||'—')+'</td><td>'+esc(r.author||'—')+'</td><td>'+esc(r.isbn||'—')+'</td><td>'+esc(r.copies||'1')+'</td><td>'+esc(r.issue||'Ready')+'</td></tr>';}).join('')+
+      checked.map(function(r){return '<tr><td>'+r._line+'</td><td>'+esc(r.title||'—')+'</td><td>'+esc(r.author||'—')+'</td><td>'+esc(r.isbn||'—')+'</td><td>'+esc(r.copies||'1')+'</td><td>'+esc(r.issue||'Ready')+'</td></tr>';}).join('')+
       '</table></div>'+(checked.length>100?'<p>Showing first 100 rows of '+checked.length+'.</p>':'');
   };
   window.commitCSV=function(){
